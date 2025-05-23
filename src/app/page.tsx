@@ -1,103 +1,100 @@
-import Image from "next/image";
+import FloatingImages from "@/components/FloatingImages";
+import HotelImageSlider from "@/components/HotelImageSlider";
+import Recommendations from "@/components/Recommendations";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen w-full flex flex-col items-center gap-y-4 mb-5">
+      <div className="flex flex-col items-center w-full gap-y-2">
+        <HotelImageSlider />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <FloatingImages />
+        <div className="flex flex-col  w-[95%] gap-y-2">
+          <h1 className="text-balck text-3xl font-semibold">
+            Welcome to Hotel Gennie
+          </h1>
+          <p className="text-balck text-base font-normal text-justify">
+            Thanks for staying with us! You can order items from our kitty
+            whether its a delicious dish from our kitchen or a essential kit or
+            an complimentary service at your doorstep and that too in less than
+            10 mins.
+          </p>
+          <button className="bg-[#ff493d] px-5 py-2 rounded-md hover:shadow-md">
+            <Link href="/restaurant">
+              <span className="text-white text-lg font-semibold ">
+                Shop now
+              </span>
+            </Link>
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <div className="flex flex-col overflow-x-auto snap-x snap-mandatory w-[95%] gap-y-3">
+        {/* Card 1 */}
+        <div className="snap-center flex-shrink-0 w-full h-[175px] p-2 backdrop-blur-lg bg-white border-gray-200 border-2 rounded-2xl">
+          <div className="w-full bg-opacity-50 text-black rounded-b-lg px-3 gap-y-2">
+            <span className="font-semibold text-xl ">
+              Complimentary Products
+            </span>
+            <p className="font-normal text-base mt-2 text-justify">
+              We provide no of products to make your stay memorable with us by
+              providing as much a products as complimentary with you stay..
+              Order No
+            </p>
+            <Link href="/complimentary">
+              <span className="text-xl text-blue-500">Complimentary</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Card 2 */}
+        <div className="snap-center flex-shrink-0 w-full h-[175px] p-2 backdrop-blur-lg bg-white border-gray-200 border-2 rounded-2xl">
+          <div className="w-full bg-opacity-50 text-black rounded-b-lg px-3 gap-y-2">
+            <span className="font-semibold text-xl ">Essentials Products</span>
+            <p className="font-normal text-base mt-2 text-justify">
+              We provide no of products that you will be required during your
+              visit with us (prepaid)
+            </p>
+            <Link href="/shop">
+              <span className="text-xl text-blue-500">Essentials</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Card 3 */}
+        <div className="snap-center flex-shrink-0 w-full h-[175px] p-2 backdrop-blur-lg bg-white border-gray-200 border-2 rounded-2xl">
+          <div className="w-full bg-opacity-50 text-black rounded-b-lg px-3 gap-y-2">
+            <span className="font-semibold text-xl ">Restaurent</span>
+            <p className="font-normal text-base mt-2 text-justify">
+              We provide no of delicious items from our Chef (prepaid)
+            </p>
+            <Link href="/restaurant">
+              <span className="text-xl text-blue-500">Restaurant</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col w-full bg-gray-200 items-center py-5">
+        <h3 className="uppercase text-2xl text-black font-semibold">
+          Just in!
+        </h3>
+        <span>Browse our new products</span>
+        <Recommendations category="essentials" />
+      </div>
+
+      <div className="flex flex-col w-full bg-gray-200 items-center py-5 text-center">
+        <span className="uppercase text-xl text-black font-semibold">
+          Try our bestsellers
+        </span>
+        <p className="px-5">
+          At our shop, we believe in the power of herbs to heal and nourish the
+          body. That's why we've carefully curated a selection of the finest
+          herbal teas from around the world. From refreshing mint to soothing
+          chamomile, we have a tea for every mood and occasion.
+        </p>
+        <Recommendations category="restaurant" />
+      </div>
     </div>
   );
 }
