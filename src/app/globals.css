@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* Force country dropdown to open upward */
+.react-tel-input .country-list {
+  bottom: 100% !important;
+  top: auto !important;
+  margin-bottom: 5px;
+  z-index: 9999;
+}

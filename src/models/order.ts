@@ -4,6 +4,7 @@ const OrderSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     room: { type: String, required: true },
+    phone: { type: String, required: true }, 
     items: [
       {
         _id: String,

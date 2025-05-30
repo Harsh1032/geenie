@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 import AddProductForm from "@/components/AddProductForm";
 import UpdateProductForm from "@/components/UpdateProductForm";
 import DeleteProductForm from "@/components/DeleteProductForm";
-// import NewOrder from "@/components/NewOrder";
+import NewOrder from "@/components/NewOrder";
 
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,7 +110,7 @@ const Page = () => {
                 Completed Orders
               </button>
             </div>
-            {/* <NewOrder view={orderView} /> */}
+            <NewOrder view={orderView} />
           </>
         )}
         {activeTab === "Add Product" && (

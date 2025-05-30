@@ -4,11 +4,14 @@ import { useCart } from "@/context/CartContext";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export default function CheckoutPage() {
   const { cart, clearCart, addToCart } = useCart();
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
+  const [phone, setPhone] = useState("");
 
   const updateQty = (_id: string, delta: number) => {
     const item = cart.find((c) => c._id === _id);
@@ -22,7 +25,7 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !room) return alert("Please fill all fields");
+    if (!name || !room || !phone) return toast("Please fill all fields");
 
     const res = await fetch("/api/order", {
       method: "POST",
@@ -30,6 +33,7 @@ export default function CheckoutPage() {
       body: JSON.stringify({
         name,
         room,
+        phone,
         items: cart,
       }),
     });
@@ -38,6 +42,7 @@ export default function CheckoutPage() {
       toast.success("Your Order was successfully placed!");
       clearCart();
       setName("");
+      setPhone("");
       setRoom("");
     } else {
       toast.error("Your order can not be placed!");
@@ -124,6 +129,21 @@ export default function CheckoutPage() {
                 onChange={(e) => setRoom(e.target.value)}
                 className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff493d]"
                 required
+              />
+              <PhoneInput
+                country={"ae"}
+                value={phone} // Must include `+971` to show UAE code
+                onChange={(val) => setPhone(val)} // val will be like "+97150xxxxxx"
+                enableSearch={true}
+                enableLongNumbers={true}
+                countryCodeEditable={false}
+                inputClass="!w-full !text-sm !py-2 !pl-12 pr-4 !rounded !border !border-gray-300"
+                containerClass="mb-2"
+                buttonClass="!border-r !border-gray-300"
+                inputProps={{
+                  name: "phone",
+                  required: true,
+                }}
               />
             </div>
 
