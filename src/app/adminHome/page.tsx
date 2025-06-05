@@ -10,6 +10,8 @@ import NewOrder from "@/components/NewOrder";
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Orders");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [activeAction, setActiveAction] = useState<"add" | "update" | "delete">(
     "add"
   );
@@ -88,29 +90,42 @@ const Page = () => {
       <div className="flex min-h-screen w-full flex-col items-center p-6 bg-gray-100">
         {activeTab === "Orders" && (
           <>
-            <div className="flex w-full justify-between mb-6">
-              <button
-                className={`px-4 py-2 rounded-md ${
-                  orderView === "current"
-                    ? "bg-orange-500 text-white"
-                    : "bg-white"
-                }`}
-                onClick={() => setOrderView("current")}
-              >
-                Current Orders
-              </button>
-              <button
-                className={`px-4 py-2 rounded-md ${
-                  orderView === "completed"
-                    ? "bg-orange-500 text-white"
-                    : "bg-white"
-                }`}
-                onClick={() => setOrderView("completed")}
-              >
-                Completed Orders
-              </button>
+            <div className="w-full space-y-4 mb-6">
+              {/* Toggle buttons */}
+              <div className="flex justify-between">
+                <button
+                  className={`px-4 py-2 rounded-md ${
+                    orderView === "current"
+                      ? "bg-orange-500 text-white"
+                      : "bg-white"
+                  }`}
+                  onClick={() => setOrderView("current")}
+                >
+                  Current Orders
+                </button>
+                {/* 🔍 Search bar */}
+                <input
+                  type="text"
+                  placeholder="Search by room or phone"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+                <button
+                  className={`px-4 py-2 rounded-md ${
+                    orderView === "completed"
+                      ? "bg-orange-500 text-white"
+                      : "bg-white"
+                  }`}
+                  onClick={() => setOrderView("completed")}
+                >
+                  Completed Orders
+                </button>
+              </div>
             </div>
-            <NewOrder view={orderView} />
+
+            {/* 📦 Orders list */}
+            <NewOrder view={orderView} searchQuery={searchQuery} />
           </>
         )}
         {activeTab === "Add Product" && (

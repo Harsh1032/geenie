@@ -21,11 +21,14 @@ type Order = {
   createdAt: string;
   status: string;
 };
-
-const NewOrder = ({ view }: { view: "current" | "completed" }) => {
+const NewOrder = ({
+  view,
+  searchQuery,
+}: {
+  view: "current" | "completed";
+  searchQuery: string;
+}) => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-
   useEffect(() => {
     const fetchOrders = async () => {
       const res = await fetch("/api/order");
@@ -73,25 +76,17 @@ const NewOrder = ({ view }: { view: "current" | "completed" }) => {
   };
 
   const statusFilter = view === "current" ? "pending" : "completed";
- const filteredOrders = orders.filter((order) => {
-  const statusMatch = order.status === (view === "current" ? "pending" : "completed");
-  const searchMatch =
-    order.room.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    order.phone?.toLowerCase().includes(searchQuery.toLowerCase());
-  return statusMatch && searchMatch;
-});
+  const filteredOrders = orders.filter((order) => {
+    const statusMatch =
+      order.status === (view === "current" ? "pending" : "completed");
+    const searchMatch =
+      order.room.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.phone?.toLowerCase().includes(searchQuery.toLowerCase());
+    return statusMatch && searchMatch;
+  });
 
   return (
     <div className="p-6 w-full">
-       <div className="mb-4">
-    <input
-      type="text"
-      placeholder="Search by room or phone"
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      className="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-    />
-  </div>
       {filteredOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-[60vh] text-gray-500">
           <PackageSearch className="w-20 h-20 mb-4 opacity-50" />
@@ -117,6 +112,9 @@ const NewOrder = ({ view }: { view: "current" | "completed" }) => {
                   </p>
                   <p className="text-sm text-gray-800 font-medium">
                     <strong>Room:</strong> {order.room}
+                  </p>
+                 <p className="text-sm text-gray-800 font-medium">
+                    <strong>Phone number:</strong> +{order.phone}
                   </p>
                 </div>
                 <button
@@ -157,6 +155,7 @@ const NewOrder = ({ view }: { view: "current" | "completed" }) => {
               <tr>
                 <th className="px-6 py-3 text-left">Name</th>
                 <th className="px-6 py-3 text-left">Room</th>
+                <th className="px-6 py-3 text-left">Phone Number</th>
                 <th className="px-6 py-3 text-left">Items</th>
                 <th className="px-6 py-3 text-right">Total</th>
                 <th className="px-6 py-3 text-center">Status</th>
@@ -173,6 +172,9 @@ const NewOrder = ({ view }: { view: "current" | "completed" }) => {
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900">
                     {order.room}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900">
+                    +{order.phone}
                   </td>
                   <td className="px-6 py-4 text-gray-700">
                     <ul className="space-y-1">

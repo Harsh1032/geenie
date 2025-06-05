@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Menu } from "lucide-react";
+import { Home, Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -33,16 +33,22 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky z-[100] h-16 px-2 flex items-center justify-between top-0 w-full border-b border-gray-200 bg-white backdrop-blur-lg">
-      <img src="./logo.jpeg" alt="Company Logo" className="w-[50px] h-[50px]" />
+    <nav className="sticky z-[100] h-16 px-2 flex items-center justify-between top-0 w-full bg-[#FFA553] backdrop-blur-lg">
+      <img src="./logo.png" alt="Company Logo" className="w-[70px] h-[50px]" />
 
-      <input
+      {/* <input
         type="text"
         placeholder="Search product"
         className="mx-4 px-4 py-1 rounded-md border border-gray-300 focus:outline-none text-sm w-[150px]"
-      />
+      /> */}
 
-      <Menu className="size-7" onClick={() => setIsOpen(!isOpen)} />
+      <Link href="/">
+        <Home className="size-9 text-white" />
+      </Link>
+      <Link href="/checkout">
+        <ShoppingCart className="size-9 text-white" />
+      </Link>
+      <Menu className="size-9 text-white" onClick={() => setIsOpen(!isOpen)} />
 
       {isOpen && (
         <div
@@ -54,7 +60,7 @@ const Navbar = () => {
             className="text-black font-normal text-xl"
             onClick={handleLinkClick}
           >
-              Home
+            Home
           </Link>
           <Link
             href="/shop"

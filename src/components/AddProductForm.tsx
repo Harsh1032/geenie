@@ -2,12 +2,13 @@
 
 import { Loader2 } from "lucide-react";
 import { useState, useRef } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 const AddProductForm = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("essentials");
+  const [subCategory, setSubCategory] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [status, setStatus] = useState<
@@ -36,7 +37,7 @@ const AddProductForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !price || !category || !image) {
+    if (!name || !price || !category || !image || !subCategory) {
       alert("All fields are required.");
       return;
     }
@@ -47,6 +48,7 @@ const AddProductForm = () => {
     formData.append("name", name);
     formData.append("price", price.toString());
     formData.append("category", category);
+    formData.append("subCategory", subCategory);
     formData.append("image", image);
 
     try {
@@ -63,13 +65,14 @@ const AddProductForm = () => {
       setName("");
       setPrice("");
       setCategory("essentials");
+      setSubCategory("");
       setImage(null);
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
       console.error(err);
       setStatus("error");
-      
+
       toast.error("Prodcut couldn't be created");
     } finally {
       setTimeout(() => setStatus("idle"), 3000);
@@ -112,7 +115,14 @@ const AddProductForm = () => {
             <option value="essentials">Essentials</option>
             <option value="restaurant">Restaurant</option>
           </select>
-
+          <input
+            type="text"
+            placeholder="Sub Category"
+            value={subCategory}
+            onChange={(e) => setSubCategory(e.target.value)}
+            required
+            className="p-3 border border-gray-300 rounded-md"
+          />
           <input
             type="file"
             accept="image/*"
@@ -143,9 +153,11 @@ const AddProductForm = () => {
             className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md text-lg flex items-center justify-center"
             disabled={status === "loading"}
           >
-            {status === "loading"
-              ? <Loader2 className="size-6 animate-spin"/>
-              : "Create Product"}
+            {status === "loading" ? (
+              <Loader2 className="size-6 animate-spin" />
+            ) : (
+              "Create Product"
+            )}
           </button>
 
           {status === "error" && (

@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { io } from "socket.io-client";
 
 interface RecommendationItem {
   _id: string;
@@ -11,6 +12,7 @@ interface RecommendationItem {
   imageUrl: string;
   price: number;
   category: string;
+  disabled: boolean;
 }
 
 interface RecommendationsProps {
@@ -26,29 +28,49 @@ export default function Recommendations({ category }: RecommendationsProps) {
   const handleAddAndOpenCheckout = (item: RecommendationItem) => {
     addToCart({
       _id: item._id,
-      title: item.name, // ✅ fix: map name ➝ title
-      image: item.imageUrl, // ✅ fix: map imageUrl ➝ image
+      title: item.name,
+      image: item.imageUrl,
       price: item.price,
       quantity: 1,
     });
     router.push("/checkout");
   };
 
+  const fetchProducts = async () => {
+    const res = await fetch("/api/product");
+    const data = await res.json();
+    const filtered = data.products.filter(
+      (item: RecommendationItem) => item.category === category && !item.disabled
+    );
+    setAllItems(filtered);
+    setVisibleItems(filtered.slice(0, 2));
+  };
+
+  // Initial fetch and refetch on category change
   useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await fetch("/api/product");
-      const data = await res.json();
-      const filtered = data.products.filter(
-        (item: RecommendationItem) => item.category === category
-      );
-
-      setAllItems(filtered);
-      setVisibleItems(filtered.slice(0, 2));
-    };
-
     fetchProducts();
   }, [category]);
 
+  // Real-time updates with socket
+  useEffect(() => {
+    const socket = io({
+      path: "/api/socket_io", // ✅ match your backend
+    });
+
+    socket.on("connect", () => {
+      console.log("✅ Socket connected:", socket.id);
+    });
+    
+    socket.on("update_product", () => {
+      fetchProducts();
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  // Autoplay recommendation rotation
   useEffect(() => {
     let index = 0;
 
@@ -66,7 +88,7 @@ export default function Recommendations({ category }: RecommendationsProps) {
   }, [allItems]);
 
   return (
-    <div className="w-full px-4 py-2 mt-4 bg-gray-100 flex flex-col justify-center items-center">
+    <div className="w-full mt-4 bg-transparent flex flex-col justify-center items-center">
       <div className="flex gap-4 overflow-x-auto">
         {visibleItems.map((item) => (
           <div
@@ -79,7 +101,6 @@ export default function Recommendations({ category }: RecommendationsProps) {
               className="w-full h-[100px] object-cover rounded-md"
             />
 
-            {/* Add button */}
             <button
               onClick={() => handleAddAndOpenCheckout(item)}
               className="absolute top-0 right-0 bg-[#ff493d] hover:bg-[#e13d30] text-white rounded-full p-1"

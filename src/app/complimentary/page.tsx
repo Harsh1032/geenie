@@ -11,6 +11,7 @@ type Product = {
   name: string;
   price: number;
   category: string;
+  subCategory: string;
   imageUrl: string;
 };
 
