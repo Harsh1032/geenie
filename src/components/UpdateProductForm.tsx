@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {toast, Toaster} from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 interface Product {
   _id: string;
@@ -17,6 +17,7 @@ const UpdateProductForm = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [form, setForm] = useState<Record<string, any>>({});
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [filterCategory, setFilterCategory] = useState<string>("all");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -83,10 +84,32 @@ const UpdateProductForm = () => {
     }
   };
 
+  const filteredProducts =
+    filterCategory === "all"
+      ? products
+      : products.filter((p) => p.category === filterCategory);
+
   return (
     <>
+      {/* Category Filter */}
+      <div className="mb-4 flex gap-2 items-center">
+        <label className="font-medium text-sm">Filter by category:</label>
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+          className="border border-gray-300 rounded px-2 py-1 text-sm"
+        >
+          <option value="all">All</option>
+          {[...new Set(products.map((p) => p.category))].map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="space-y-4 w-full">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product._id}
             className="bg-white shadow p-4 rounded-lg w-full flex items-center justify-between"
@@ -191,7 +214,7 @@ const UpdateProductForm = () => {
           </div>
         </div>
       )}
-      <Toaster/>
+      <Toaster />
     </>
   );
 };

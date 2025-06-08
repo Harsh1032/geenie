@@ -1,18 +1,21 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import Order from "@/models/order";
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   await connectToDatabase();
 
   const { id } = await Promise.resolve(context.params);
 
   const updated = await Order.findByIdAndUpdate(
     id,
-    { status: "completed" },
+    { accepted: true },
     { new: true }
   );
-
   
   globalThis.io?.emit("order_updated", updated.toObject()); // 👈 Emit update to user
 

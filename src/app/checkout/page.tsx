@@ -6,12 +6,14 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useRouter } from "next/navigation"; // Add this at the top
 
 export default function CheckoutPage() {
   const { cart, clearCart, addToCart } = useCart();
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [phone, setPhone] = useState("");
+  const router = useRouter();
 
   const updateQty = (_id: string, delta: number) => {
     const item = cart.find((c) => c._id === _id);
@@ -20,7 +22,7 @@ export default function CheckoutPage() {
     addToCart({ ...item, quantity: delta });
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +43,11 @@ export default function CheckoutPage() {
     if (res.ok) {
       toast.success("Your Order was successfully placed!");
       clearCart();
+      router.push(
+        `/orderHistory?phone=${encodeURIComponent(
+          phone
+        )}&room=${encodeURIComponent(room)}`
+      );
       setName("");
       setPhone("");
       setRoom("");
@@ -49,24 +56,30 @@ export default function CheckoutPage() {
     }
   };
 
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const gst = subtotal * 0.05;
+  const total = subtotal + gst;
+
   return (
-    <div className="w-full py-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">Checkout</h1>
+    <div className="w-full flex flex-col items-center py-5 bg-[#FFA553]">
       {cart.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-[70vh] text-center text-gray-600">
-          <ShoppingCart className="w-20 h-20 mb-4 text-gray-400" />
+        <div className="flex flex-col items-center justify-center h-[70vh] text-center text-white">
+          <ShoppingCart className="w-20 h-20 mb-4 text-white" />
           <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
           <p className="mb-4">Looks like you haven't added anything yet.</p>
           <a
             href="/restaurant"
-            className="bg-[#ff493d] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#e13d30] transition"
+            className="bg-[#ffc894] text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-[#e13d30] transition"
           >
             Add Items
           </a>
         </div>
       ) : (
         <>
-          <ul className="space-y-4 px-4">
+          <ul className="space-y-4 px-4 w-full">
             {cart.map((item) => (
               <li
                 key={item._id}
@@ -110,8 +123,19 @@ export default function CheckoutPage() {
           </ul>
 
           <form
-            onSubmit={handleSubmit}
-            className="fixed bottom-0 left-0 right-0 bg-white shadow-xl border-t z-20 px-4 pt-3 pb-5 rounded-t-2xl"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!name || !room || !phone)
+                return toast("Please fill all fields");
+
+              // Save data to localStorage (or you could use context)
+              localStorage.setItem(
+                "checkoutInfo",
+                JSON.stringify({ name, room, phone })
+              );
+              router.push("/payment");
+            }}
+            className="w-[90%] mt-6 bg-white shadow-xl border-t z-20 px-4 pt-3 pb-5 rounded-2xl"
           >
             <div className="mb-4 space-y-2">
               <input
@@ -147,9 +171,23 @@ export default function CheckoutPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-gray-500">Total</span>
-              <span className="text-xl font-bold text-black">₹{total}</span>
+            <div className="flex items-center justify-between mb-3 relative group">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">Total</span>
+                <span className="text-xs text-gray-400 cursor-pointer group-hover:underline relative">
+                  (i)
+                  <div className="absolute z-10 hidden group-hover:block bg-white text-black border border-gray-300 text-xs rounded-md shadow-lg p-2 top-6 left-0 w-max min-w-[180px]">
+                    <p>Subtotal: ₹{subtotal.toFixed(2)}</p>
+                    <p>GST (5%): ₹{gst.toFixed(2)}</p>
+                    <p className="font-semibold border-t pt-1 mt-1">
+                      Total: ₹{total.toFixed(2)}
+                    </p>
+                  </div>
+                </span>
+              </div>
+              <span className="text-xl font-bold text-black">
+                ₹{total.toFixed(2)}
+              </span>
             </div>
 
             <button
@@ -157,13 +195,18 @@ export default function CheckoutPage() {
               className="w-full bg-[#ff493d] hover:bg-[#e13d30] text-white font-semibold py-3 rounded-xl transition text-center flex items-center justify-center gap-2"
             >
               <ShoppingCart size={18} />
-              Place Order
+              Proceed to Payment
             </button>
           </form>
         </>
       )}
 
-      <Recommendations category="restaurant" />
+      <div className="flex flex-col w-[90%] bg-transparent border-2 border-black rounded-lg mt-5  items-center py-4 px-2 text-center">
+        <span className="uppercase text-xl text-black font-semibold">
+          Try our best sellers
+        </span>
+        <Recommendations />
+      </div>
       <Toaster />
     </div>
   );

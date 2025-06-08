@@ -16,9 +16,8 @@ interface Product {
 const DeleteProductForm = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [confirmAction, setConfirmAction] = useState<
-    "disable" | "enable" | null
-  >(null);
+  const [confirmAction, setConfirmAction] = useState<"disable" | "enable" | null>(null);
+  const [filterCategory, setFilterCategory] = useState<string>("all");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,7 +54,7 @@ const DeleteProductForm = () => {
       setSelectedProduct(null);
       setConfirmAction(null);
     } else {
-      const text = await res.text(); // safely handle non-JSON errors
+      const text = await res.text();
       toast.error("Failed to update: " + text);
     }
   };
@@ -65,10 +64,33 @@ const DeleteProductForm = () => {
     setConfirmAction(null);
   };
 
+  const filteredProducts =
+    filterCategory === "all"
+      ? products
+      : products.filter((p) => p.category === filterCategory);
+
   return (
     <>
+      {/* Category Filter */}
+      <div className="mb-4 flex gap-2 items-center">
+        <label className="font-medium text-sm">Filter by category:</label>
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+          className="border border-gray-300 rounded px-2 py-1 text-sm"
+        >
+          <option value="all">All</option>
+          {[...new Set(products.map((p) => p.category))].map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Product Cards */}
       <div className="space-y-4 w-full">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product._id}
             className={`bg-white shadow p-4 rounded-lg w-full flex items-center justify-between ${
@@ -135,7 +157,7 @@ const DeleteProductForm = () => {
           </div>
         </div>
       )}
-      <Toaster/>
+      <Toaster />
     </>
   );
 };

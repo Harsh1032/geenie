@@ -160,7 +160,7 @@ const Page = () => {
                     : "w-auto h-auto p-3 bg-white border-0 rounded-lg shadow-lg hover:bg-orange-500 hover:text-white text-black"
                 }`}
               >
-                Delete Product
+                Disable Product
               </button>
             </div>
 

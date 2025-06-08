@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { CheckCircle, PackageSearch } from "lucide-react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 type OrderItem = {
   _id: string;
@@ -20,6 +20,7 @@ type Order = {
   items: OrderItem[];
   createdAt: string;
   status: string;
+  accepted: boolean;
 };
 const NewOrder = ({
   view,
@@ -46,6 +47,7 @@ const NewOrder = ({
 
     socket.on("new_order", (newOrder: Order) => {
       console.log("📦 New order received via socket", newOrder);
+      toast.success("New order recieved");
       setOrders((prev) => [newOrder, ...prev]);
     });
 
@@ -72,6 +74,24 @@ const NewOrder = ({
       );
     } catch (err) {
       toast.error("Failed to update order");
+    }
+  };
+
+  const handleAcceptOrder = async (id: string) => {
+    try {
+      const res = await fetch(`/api/order/accept/${id}`, { method: "PUT" });
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+      toast.success("Order accepted");
+
+      setOrders((prev) =>
+        prev.map((order) =>
+          order._id === id ? { ...order, accepted: true } : order
+        )
+      );
+    } catch {
+      toast.error("Failed to accept order");
     }
   };
 
@@ -113,16 +133,29 @@ const NewOrder = ({
                   <p className="text-sm text-gray-800 font-medium">
                     <strong>Room:</strong> {order.room}
                   </p>
-                 <p className="text-sm text-gray-800 font-medium">
+                  <p className="text-sm text-gray-800 font-medium">
                     <strong>Phone number:</strong> +{order.phone}
                   </p>
                 </div>
-                <button
-                  onClick={() => handleMarkCompleted(order._id)}
-                  className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-md"
-                >
-                  Mark as Completed
-                </button>
+                {order.status === "pending" && (
+                  <>
+                    {!order.accepted ? (
+                      <button
+                        onClick={() => handleAcceptOrder(order._id)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-md"
+                      >
+                        Accept Order
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleMarkCompleted(order._id)}
+                        className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-md"
+                      >
+                        Mark as Completed
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
               <ul className="divide-y divide-gray-200">
                 {order.items.map((item) => (
@@ -205,6 +238,7 @@ const NewOrder = ({
           </table>
         </div>
       )}
+      <Toaster />
     </div>
   );
 };

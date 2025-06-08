@@ -1,4 +1,3 @@
-import FloatingImages from "@/components/FloatingImages";
 import HotelImageSlider from "@/components/HotelImageSlider";
 import Recommendations from "@/components/Recommendations";
 import {
@@ -16,9 +15,9 @@ export default function Home() {
         <HotelImageSlider />
 
         {/* <FloatingImages /> */}
-        <div className="flex flex-col  w-[90%] gap-y-2">
+        <div className="flex flex-col  w-[90%] gap-y-2 mt-2">
           <button className="bg-[#ffc894] px-5 py-2 rounded-full hover:shadow-md">
-            <Link href="/restaurant">
+            <Link href="/complimentary">
               <span className="text-black text-lg font-bold ">
                 Select your welcome drink and let us take care of the rest.
               </span>
@@ -59,7 +58,7 @@ export default function Home() {
         <span className="uppercase text-xl text-black font-semibold">
           Try our best sellers
         </span>
-        <Recommendations category="restaurant" />
+        <Recommendations/>
       </div>
     </div>
   );

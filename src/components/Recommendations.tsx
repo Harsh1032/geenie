@@ -16,7 +16,8 @@ interface RecommendationItem {
 }
 
 interface RecommendationsProps {
-  category: "essentials" | "restaurant";
+  // optional if needed, but not used anymore
+  category?: never;
 }
 
 export default function Recommendations({ category }: RecommendationsProps) {
@@ -40,8 +41,11 @@ export default function Recommendations({ category }: RecommendationsProps) {
     const res = await fetch("/api/product");
     const data = await res.json();
     const filtered = data.products.filter(
-      (item: RecommendationItem) => item.category === category && !item.disabled
+      (item: RecommendationItem) =>
+        (item.category === "restaurant" || item.category === "essentials") &&
+        !item.disabled
     );
+
     setAllItems(filtered);
     setVisibleItems(filtered.slice(0, 2));
   };
@@ -60,7 +64,7 @@ export default function Recommendations({ category }: RecommendationsProps) {
     socket.on("connect", () => {
       console.log("✅ Socket connected:", socket.id);
     });
-    
+
     socket.on("update_product", () => {
       fetchProducts();
     });

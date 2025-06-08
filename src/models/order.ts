@@ -19,6 +19,7 @@ const OrderSchema = new mongoose.Schema(
       enum: ["pending", "completed"],
       default: "pending", // All new orders start as pending
     },
+    accepted: { type: Boolean, default: false },
     createdAt: {
       type: Date,
       default: Date.now,

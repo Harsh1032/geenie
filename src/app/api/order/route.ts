@@ -8,17 +8,24 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const { items, name, room, phone} = body;
+    const { items, name, room, phone } = body;
 
-   if (!name || !room || !phone) {
-  return NextResponse.json(
-    { success: false, message: "Missing name, room, or phone number" },
-    { status: 400 }
-  );
-}
+    if (!name || !room || !phone) {
+      return NextResponse.json(
+        { success: false, message: "Missing name, room, or phone number" },
+        { status: 400 }
+      );
+    }
 
     // Save to DB
-    const newOrder = await Order.create({ items, name, room, phone, status: "pending" });
+    const newOrder = await Order.create({
+      items,
+      name,
+      room,
+      phone,
+      status: "pending",
+      accepted: false,
+    });
 
     // Emit event via socket.io to notify admin dashboard
     globalThis.io?.emit("new_order", newOrder.toObject()); // 👈 emits to all clients listening
@@ -43,5 +50,3 @@ export async function GET() {
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }
-
-
