@@ -6,10 +6,14 @@ import { Product } from "@/models/product";
 import { v4 as uuidv4 } from "uuid";
 import { Types } from "mongoose";
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
-    const { id } = await Promise.resolve(context.params);
+
+    const { id } = await context.params; 
 
     if (!Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });

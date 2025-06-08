@@ -4,10 +4,14 @@ import { connectToDatabase } from "@/lib/db";
 import { Product } from "@/models/product";
 import { Types } from "mongoose";
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
-    const { id } = await Promise.resolve(context.params);
+
+    const { id } = await context.params;
     const body = await req.json();
 
     if (!Types.ObjectId.isValid(id)) {

@@ -5,11 +5,11 @@ import Order from "@/models/order";
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectToDatabase();
 
-  const { id } = await Promise.resolve(context.params);
+  const { id } = await params;
 
   const updated = await Order.findByIdAndUpdate(
     id,
