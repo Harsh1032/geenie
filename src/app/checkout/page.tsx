@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   const [room, setRoom] = useState("");
   const [phone, setPhone] = useState("");
   const router = useRouter();
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const updateQty = (_id: string, delta: number) => {
     const item = cart.find((c) => c._id === _id);
@@ -174,9 +175,16 @@ export default function CheckoutPage() {
             <div className="flex items-center justify-between mb-3 relative group">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-500">Total</span>
-                <span className="text-xs text-gray-400 cursor-pointer group-hover:underline relative">
+                <span
+                  className="text-xs text-gray-400 cursor-pointer relative group"
+                  onClick={() => setShowTooltip((prev) => !prev)}
+                >
                   (i)
-                  <div className="absolute z-10 hidden group-hover:block bg-white text-black border border-gray-300 text-xs rounded-md shadow-lg p-2 top-6 left-0 w-max min-w-[180px]">
+                  <div
+                    className={`absolute z-10 ${
+                      showTooltip ? "block" : "hidden"
+                    } group-hover:block bg-white text-black border border-gray-300 text-xs rounded-md shadow-lg p-2 top-6 left-0 w-max min-w-[180px]`}
+                  >
                     <p>Subtotal: ₹{subtotal.toFixed(2)}</p>
                     <p>GST (5%): ₹{gst.toFixed(2)}</p>
                     <p className="font-semibold border-t pt-1 mt-1">
