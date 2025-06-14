@@ -89,7 +89,7 @@ const DeleteProductForm = () => {
       </div>
 
       {/* Product Cards */}
-      <div className="space-y-4 w-full">
+      <div className="space-y-4 w-full overflow-y-scroll">
         {filteredProducts.map((product) => (
           <div
             key={product._id}

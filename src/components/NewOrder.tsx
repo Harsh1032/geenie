@@ -106,7 +106,7 @@ const NewOrder = ({
   });
 
   return (
-    <div className="p-6 w-full">
+    <div className="p-6 w-full overflow-y-scroll">
       {filteredOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-[60vh] text-gray-500">
           <PackageSearch className="w-20 h-20 mb-4 opacity-50" />

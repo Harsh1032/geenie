@@ -44,7 +44,7 @@ const Navbar = () => {
       const category = data.product.category.toLowerCase();
       if (category === "restaurant") router.push("/restaurant");
       else if (category === "complimentary") router.push("/complimentary");
-      else if (category === "essentials") router.push("/essentials");
+      else if (category === "essentials") router.push("/shop");
       else router.push("/");
     } else {
       alert("Product not found");
@@ -53,7 +53,9 @@ const Navbar = () => {
 
   return (
     <nav className="sticky z-[100] h-16 px-2 flex items-center justify-between top-0 w-full bg-[#FFA553] backdrop-blur-lg">
+      <Link href="/">
       <img src="./logo2.png" alt="Company Logo" className="w-[100px] h-[35px]" />
+      </Link>
       <form
         onSubmit={(e) => {
           e.preventDefault();

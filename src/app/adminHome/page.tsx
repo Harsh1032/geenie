@@ -131,7 +131,7 @@ const Page = () => {
         {activeTab === "Add Product" && (
           <>
             {/* Buttons to switch views */}
-            <div className="flex w-full justify-between mb-6">
+            <div className="flex w-full justify-between mb-6 ">
               <button
                 onClick={() => setActiveAction("add")}
                 className={`px-4 py-2 rounded-md ${

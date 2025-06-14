@@ -92,7 +92,7 @@ const UpdateProductForm = () => {
   return (
     <>
       {/* Category Filter */}
-      <div className="mb-4 flex gap-2 items-center">
+      <div className="mb-4 flex gap-2 items-center ">
         <label className="font-medium text-sm">Filter by category:</label>
         <select
           value={filterCategory}
@@ -108,7 +108,7 @@ const UpdateProductForm = () => {
         </select>
       </div>
 
-      <div className="space-y-4 w-full">
+      <div className="space-y-4 w-full overflow-y-scroll">
         {filteredProducts.map((product) => (
           <div
             key={product._id}
