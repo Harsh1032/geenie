@@ -24,6 +24,7 @@ export async function PUT(
     const price = formData.get("price") as string;
     const category = formData.get("category") as string;
     const subCategory = formData.get("subCategory") as string;
+    const description = formData.get("description") as string;
     const imageFile = formData.get("image") as File | null;
 
     const product = await Product.findById(id);
@@ -43,6 +44,7 @@ export async function PUT(
     product.price = price || product.price;
     product.category = category || product.category;
     product.subCategory = subCategory || product.subCategory;
+    product.description = description || product.description;
     product.imageUrl = imageUrl;
 
     await product.save();

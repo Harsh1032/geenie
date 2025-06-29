@@ -13,6 +13,7 @@ type Product = {
   price: number;
   category: string;
   subCategory: string;
+  description: string;
   imageUrl: string;
   disabled: boolean;
 };
@@ -109,7 +110,7 @@ const Page = () => {
   return (
     <div className="w-full flex flex-col items-center pb-5 bg-[#FFA553]">
       {/* Top Navigation Tabs */}
-      <div className="h-16 w-full px-4 flex items-center justify-between border-y-2 border-gray-200 bg-[#FFA553] backdrop-blur-lg">
+      <div className="fixed z-100 h-16 w-full px-4 flex items-center justify-between border-y-2 border-gray-200 bg-[#FFA553] backdrop-blur-lg">
         <Link href="/complimentary">
           <button className="bg-[#ffc894] p-2 rounded-lg hover:shadow-2xl">
             <span className="text-base font-medium">Complimentary</span>
@@ -251,6 +252,7 @@ const Page = () => {
               imageSrc={product.imageUrl}
               title={product.name}
               price={product.price.toString()}
+              description={product.description}
             />
           </div>
         ))

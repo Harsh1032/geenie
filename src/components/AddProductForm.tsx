@@ -9,6 +9,7 @@ const AddProductForm = () => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("essentials");
   const [subCategory, setSubCategory] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [status, setStatus] = useState<
@@ -49,6 +50,7 @@ const AddProductForm = () => {
     formData.append("price", price.toString());
     formData.append("category", category);
     formData.append("subCategory", subCategory);
+    formData.append("description", description);
     formData.append("image", image);
 
     try {
@@ -66,6 +68,7 @@ const AddProductForm = () => {
       setPrice("");
       setCategory("essentials");
       setSubCategory("");
+      setDescription("");
       setImage(null);
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -80,7 +83,7 @@ const AddProductForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-start md:items-center min-h-screen px-4">
+    <div className="flex justify-center items-start md:items-center min-h-screen px-4 ">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-xl bg-white p-6 rounded-lg shadow-md space-y-6"
@@ -120,6 +123,13 @@ const AddProductForm = () => {
             placeholder="Sub Category"
             value={subCategory}
             onChange={(e) => setSubCategory(e.target.value)}
+            required
+            className="p-3 border border-gray-300 rounded-md"
+          />
+          <textarea
+            placeholder="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
             className="p-3 border border-gray-300 rounded-md"
           />

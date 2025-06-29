@@ -87,7 +87,7 @@ const Page = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex min-h-screen w-full flex-col items-center p-6 bg-gray-100">
+      <div className="flex min-h-screen w-full flex-col items-center p-6 bg-gray-100  overflow-y-scroll">
         {activeTab === "Orders" && (
           <>
             <div className="w-full space-y-4 mb-6">

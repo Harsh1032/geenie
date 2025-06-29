@@ -10,6 +10,7 @@ interface ItemCardProps {
   imageSrc: string;
   title: string;
   price: string;
+  description: string
 }
 
 export default function ItemCard({
@@ -17,6 +18,7 @@ export default function ItemCard({
   imageSrc,
   title,
   price,
+  description,
 }: ItemCardProps) {
   const [quantity, setQuantity] = useState(0);
   const { addToCart } = useCart();
@@ -40,6 +42,7 @@ export default function ItemCard({
     setQuantity(0);
   };
 
+
   return (
     <div className="flex flex-col gap-y-4 rounded-lg shadow-md p-4 w-full bg-white">
       <div className="relative w-full h-56 mb-2">
@@ -54,7 +57,7 @@ export default function ItemCard({
         <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-lg font-semibold">₹{price}</p>
       </div>
-
+      <p className="text-base font-normal mb-3 text-justify">{description}</p>
       <div className="flex justify-end items-center w-full">
         {quantity === 0 ? (
           <button

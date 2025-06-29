@@ -4,12 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { Home, Menu, ShoppingCart, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/context/CartContext"; // 👈 import the hook
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+  const { cart } = useCart(); // 👈 get cart from context
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0); // 👈 total count
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,7 +57,11 @@ const Navbar = () => {
   return (
     <nav className="sticky z-[100] h-16 px-2 flex items-center justify-between top-0 w-full bg-[#FFA553] backdrop-blur-lg">
       <Link href="/">
-      <img src="./logo2.png" alt="Company Logo" className="w-[100px] h-[35px]" />
+        <img
+          src="./logo2.png"
+          alt="Company Logo"
+          className="w-[100px] h-[35px]"
+        />
       </Link>
       <form
         onSubmit={(e) => {
@@ -70,15 +77,20 @@ const Navbar = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="px-2 py-1 rounded-md text-sm w-[130px] outline-none"
         />
-        
+
         <button type="submit">
           <Search className="size-6 text-white" />
         </button>
       </form>
-      
-        <Link href="/checkout">
-          <ShoppingCart className="size-6 text-white" />
-        </Link>
+
+      <Link href="/checkout" className="relative">
+        <ShoppingCart className="size-6 text-white" />
+        {cartCount > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+            {cartCount}
+          </span>
+        )}
+      </Link>
       <Menu className="size-6 text-white" onClick={() => setIsOpen(!isOpen)} />
       {/* <div className="flex items-center justify-between">
         <Link href="/">

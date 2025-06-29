@@ -9,6 +9,7 @@ interface Product {
   price: number;
   category: string;
   subCategory: string;
+  description: string;
   imageUrl: string;
 }
 
@@ -35,6 +36,7 @@ const UpdateProductForm = () => {
       price: String(product.price),
       category: product.category,
       subCategory: product.subCategory,
+      description: product.description,
       image: null,
     });
     setPreviewUrl(null);
@@ -45,7 +47,7 @@ const UpdateProductForm = () => {
     setPreviewUrl(null);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -64,6 +66,7 @@ const UpdateProductForm = () => {
     formData.append("price", form.price);
     formData.append("category", form.category);
     formData.append("subCategory", form.subCategory);
+    formData.append("description", form.description);
     if (form.image) formData.append("image", form.image);
 
     const res = await fetch(`/api/product/update/${id}`, {
@@ -108,7 +111,7 @@ const UpdateProductForm = () => {
         </select>
       </div>
 
-      <div className="space-y-4 w-full overflow-y-scroll">
+      <div className="space-y-4 w-full">
         {filteredProducts.map((product) => (
           <div
             key={product._id}
@@ -178,6 +181,13 @@ const UpdateProductForm = () => {
                 value={form.subCategory}
                 onChange={handleChange}
                 placeholder="Subcategory"
+                className="w-full p-2 border rounded"
+              />
+              <textarea
+                name="description"
+                placeholder="description"
+                value={form.description}
+                onChange={handleChange}
                 className="w-full p-2 border rounded"
               />
               <input

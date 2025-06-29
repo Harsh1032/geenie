@@ -16,9 +16,10 @@ export async function POST(req: NextRequest) {
     const price = formData.get("price") as string;
     const category = formData.get("category") as string;
     const subCategory = formData.get("subCategory") as string;
+    const description = formData.get("description") as string;
     const imageFile = formData.get("image") as File;
 
-    if (!name || !price || !category || !subCategory || !imageFile) {
+    if (!name || !price || !category || !subCategory || !imageFile || !description) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -33,6 +34,7 @@ export async function POST(req: NextRequest) {
       price,
       category,
       subCategory,
+      description,
       imageUrl: s3Url,
       disabled: false, 
     });

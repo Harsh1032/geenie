@@ -89,7 +89,7 @@ const DeleteProductForm = () => {
       </div>
 
       {/* Product Cards */}
-      <div className="space-y-4 w-full overflow-y-scroll">
+      <div className="space-y-4 w-full">
         {filteredProducts.map((product) => (
           <div
             key={product._id}
@@ -117,7 +117,7 @@ const DeleteProductForm = () => {
                   : "bg-red-500 hover:bg-red-600"
               } text-white px-4 py-1 rounded`}
             >
-              {product.disabled ? "Re-enable" : "Disable"}
+              {product.disabled ? "Enable" : "Disable"}
             </button>
           </div>
         ))}
