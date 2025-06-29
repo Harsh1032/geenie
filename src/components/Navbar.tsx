@@ -104,7 +104,7 @@ const Navbar = () => {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute top-16 left-0 w-full bg-[#ffc894] shadow-md border-y-2 border-gray-200 flex flex-col items-center p-5 space-y-4"
+          className="absolute top-16 z-100 left-0 w-full bg-[#ffc894] shadow-md border-y-2 border-gray-200 flex flex-col items-center p-5 space-y-4"
         >
           <Link
             href="/"

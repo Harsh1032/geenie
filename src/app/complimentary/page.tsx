@@ -119,7 +119,7 @@ const Page = () => {
   return (
     <div className="w-full flex flex-col items-center pb-5 bg-[#FFA553]">
       {/* Top Navigation Tabs */}
-      <div className="fixed z-100 h-16 w-full px-4 flex items-center justify-between border-y-2 border-gray-200 bg-[#FFA553] backdrop-blur-lg">
+      <div className="fixed z-50 h-16 w-full px-4 flex items-center justify-between border-y-2 border-gray-200 bg-[#FFA553] backdrop-blur-lg">
         <Link href="/complimentary">
           <button className="bg-transparent border-2 border-[#ffc894] p-2 rounded-lg shadow-2xl">
             <span className="text-base text-white font-medium">
@@ -140,7 +140,7 @@ const Page = () => {
       </div>
 
       {/* Sort Button */}
-      <div className="w-[95%] mt-4 mb-2 flex items-center justify-between">
+      <div className="pt-20 w-[95%] mt-4 mb-2 flex items-center justify-between">
         {/* <button
           onClick={() => setShowSortModal(true)}
           className="px-3 py-1 bg-[#ffc894] rounded-lg font-normal text-base text-black"
