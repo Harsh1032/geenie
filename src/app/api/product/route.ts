@@ -16,18 +16,19 @@ export async function POST(req: NextRequest) {
     const price = formData.get("price") as string;
     const category = formData.get("category") as string;
     const subCategory = formData.get("subCategory") as string;
-    const description = formData.get("description") as string;
-    const imageFile = formData.get("image") as File;
+    const description = (formData.get("description") as string) || "";
+    const imageFile = formData.get("image") as File | null;
 
-    if (!name || !price || !category || !subCategory || !imageFile || !description) {
+    if (!name || !price || !category || !subCategory) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
-    // Upload to S3
-    const fileBuffer = await imageFile.arrayBuffer();
-    const fileName = `${uuidv4()}-${imageFile.name}`;
-    const s3Url = await uploadToS3(Buffer.from(fileBuffer), fileName, imageFile.type);
-
+    let s3Url = "";
+    if (imageFile && imageFile.size > 0) {
+      const fileBuffer = await imageFile.arrayBuffer();
+      const fileName = `${uuidv4()}-${imageFile.name}`;
+      s3Url = await uploadToS3(Buffer.from(fileBuffer), fileName, imageFile.type);
+    }
     // Save to MongoDB
     const newProduct = new Product({
       name,

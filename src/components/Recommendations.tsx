@@ -34,7 +34,6 @@ export default function Recommendations({ category }: RecommendationsProps) {
       price: item.price,
       quantity: 1,
     });
-    router.push("/checkout");
   };
 
   const fetchProducts = async () => {

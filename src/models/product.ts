@@ -6,8 +6,8 @@ const productSchema = new Schema({
   price: Number,
   category: { type: String, enum: ["complimentary", "essentials", "restaurant"] },
   subCategory: String,
-  description: String,
-  imageUrl: String,
+  description: { type: String, default: "" },   // Optional
+  imageUrl: { type: String, default: "" },      // Optional
   disabled: { type: Boolean, default: false }, // ✅ Add this line
 });
 

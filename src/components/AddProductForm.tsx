@@ -38,7 +38,7 @@ const AddProductForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !price || !category || !image || !subCategory) {
+    if (!name || !price || !category || !subCategory) {
       alert("All fields are required.");
       return;
     }
@@ -50,8 +50,9 @@ const AddProductForm = () => {
     formData.append("price", price.toString());
     formData.append("category", category);
     formData.append("subCategory", subCategory);
-    formData.append("description", description);
-    formData.append("image", image);
+
+    if (description) formData.append("description", description);
+    if (image) formData.append("image", image);
 
     try {
       const res = await fetch("/api/product", {
@@ -130,7 +131,6 @@ const AddProductForm = () => {
             placeholder="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
             className="p-3 border border-gray-300 rounded-md"
           />
           <input

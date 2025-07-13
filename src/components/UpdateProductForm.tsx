@@ -36,7 +36,7 @@ const UpdateProductForm = () => {
       price: String(product.price),
       category: product.category,
       subCategory: product.subCategory,
-      description: product.description,
+      description: product.description || "", // ✅ fallback
       image: null,
     });
     setPreviewUrl(null);
@@ -47,7 +47,9 @@ const UpdateProductForm = () => {
     setPreviewUrl(null);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -118,11 +120,13 @@ const UpdateProductForm = () => {
             className="bg-white shadow p-4 rounded-lg w-full flex items-center justify-between"
           >
             <div className="flex items-center gap-4">
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-20 h-20 object-cover rounded"
-              />
+              {product.imageUrl && (
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="w-20 h-20 object-cover rounded"
+                />
+              )}
               <div>
                 <p className="text-lg font-semibold">{product.name}</p>
                 <p className="text-sm text-gray-500">{product.category}</p>

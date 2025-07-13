@@ -139,8 +139,17 @@ const Page = () => {
         </Link>
       </div>
 
+      <div className="pt-20 w-[95%] mt-4 mb-2 flex items-center justify-between ">
+        <button className="bg-[#ff493d] text-white text-base font-medium w-[49%] px-4 py-2 rounded-md uppercase">
+          <Link href="/checkout">Go to Checkout</Link>
+        </button>
+
+        <button className="bg-black text-white text-base font-medium w-[49%] px-4 py-2 rounded-md uppercase">
+          <Link href="/shop">Next</Link>
+        </button>
+      </div>
       {/* Sort Button */}
-      <div className="pt-20 w-[95%] mt-4 mb-2 flex items-center justify-between">
+      <div className="w-[95%] mt-4 mb-2 flex items-center justify-between">
         {/* <button
           onClick={() => setShowSortModal(true)}
           className="px-3 py-1 bg-[#ffc894] rounded-lg font-normal text-base text-black"
