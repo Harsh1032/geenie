@@ -6,6 +6,7 @@ import ItemCard from "@/components/ItemCard";
 import Link from "next/link";
 import Recommendations from "@/components/Recommendations";
 import { LoaderCircle, PackageSearch } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   _id: string;
@@ -29,6 +30,8 @@ const Page = () => {
     null
   );
   const [showSubCatModal, setShowSubCatModal] = useState(false);
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get("highlight") ?? null;
 
   useEffect(() => {
     const socket = io({
@@ -106,6 +109,14 @@ const Page = () => {
       if (selectedSort === "High to Low") return b.price - a.price;
       return 0;
     });
+
+  if (highlightId) {
+    const index = filteredAndSorted.findIndex((p) => p._id === highlightId);
+    if (index > 0) {
+      const [highlighted] = filteredAndSorted.splice(index, 1);
+      filteredAndSorted.unshift(highlighted);
+    }
+  }
 
   // ✅ Move "Welcome Kit/Drinks" to the top if it exists
   const welcomeItemIndex = filteredAndSorted.findIndex(

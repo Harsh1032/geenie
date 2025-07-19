@@ -44,11 +44,13 @@ const Navbar = () => {
     const data = await res.json();
 
     if (res.ok && data.product) {
-      const category = data.product.category.toLowerCase();
-      if (category === "restaurant") router.push("/restaurant");
-      else if (category === "complimentary") router.push("/complimentary");
-      else if (category === "essentials") router.push("/shop");
-      else router.push("/");
+  const category = data.product.category.toLowerCase();
+  const highlightId = data.product._id;
+
+  if (category === "restaurant") router.push(`/restaurant?highlight=${highlightId}`);
+  else if (category === "complimentary") router.push(`/complimentary?highlight=${highlightId}`);
+  else if (category === "essentials") router.push(`/shop?highlight=${highlightId}`);
+  else router.push("/");
     } else {
       alert("Product not found");
     }

@@ -19,5 +19,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ product: null });
   }
 
-  return NextResponse.json({ product });
+  return NextResponse.json({ product, highlightId: product._id.toString() });
 }

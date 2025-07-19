@@ -156,7 +156,7 @@ export default function CheckoutPage() {
                 required
               />
               <PhoneInput
-                country={"ae"}
+                country={"in"}
                 value={phone} // Must include `+971` to show UAE code
                 onChange={(val) => setPhone(val)} // val will be like "+97150xxxxxx"
                 enableSearch={true}
